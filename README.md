@@ -1,28 +1,25 @@
-## Idea submission for CMPE 273 Group project
+## Project Idea for CMPE 273 Group project
+# High-Concurrency Ticketing / Flash Sale System
 
-# 1. High-Concurrency Ticketing / Flash Sale System
+A distributed ticketing platform for high-demand events, such as concerts or sports games, where many users compete for a limited number of tickets at the same time. The system will let users browse events, check ticket availability, reserve tickets, and complete purchases.
 
-A distributed ticketing platform designed to handle thousands of users simultaneously competing for a limited number of tickets during high-demand events such as concerts, sports games, or flash sales.
+The platform must prevent tickets from being oversold while remaining responsive during sudden traffic spikes. It will use distributed services and coordination to handle concurrent requests reliably and keep ticket availability consistent.
 
-The system will provide users with an event catalog, real-time ticket availability, ticket reservation, and purchase functionality. The main challenge is ensuring that limited tickets are not oversold even when thousands of requests arrive concurrently. The system will use distributed techniques such as load balancing, concurrency control, distributed locking, message queues, caching, fault tolerance, and idempotent operations to maintain consistency and availability under heavy load.
+## Project Challenge: Fair-Queue Ingress Processing
 
-Key distributed-systems concepts:
-Microservices, REST APIs, load balancing, distributed locks, caching, message queues, asynchronous processing, concurrency control, fault tolerance, idempotency, and eventual consistency.
+A flash sale can send millions of requests toward the API gateway at once. If all requests reach the application and database together, the resulting “thundering herd” can overwhelm the system before it can decide which users to serve.
 
-# 2. Package Delivery / Logistics Platform
+We will build a distributed virtual waiting room to manage this incoming traffic. It will place users in a fair first-in, first-out (FIFO) queue, issue queue tokens across distributed nodes, and admit users at a controlled rate that matches the backend database’s transaction capacity.
 
-A distributed package delivery system that allows customers to create shipments, track packages, and receive real-time delivery updates. The system will coordinate customers, delivery drivers, warehouses, and distribution centers across multiple locations.
+The waiting room may use Redis Sorted Sets or Kafka partitions to coordinate queue positions and admission across nodes. The design should preserve queue order, avoid admitting more traffic than downstream services can handle, and continue operating reliably during a high-demand sale.
 
-The main challenge is maintaining consistent package status and location information while handling a large number of concurrent shipments and updates. The system can use event-driven architecture, message queues, service discovery, load balancing, caching, and fault tolerance to process delivery events reliably.
+## Key Distributed-Systems Concepts
 
-Key distributed-systems concepts:
-Microservices, event-driven architecture, message queues, asynchronous processing, service discovery, load balancing, fault tolerance, eventual consistency, and distributed state management.
-
-# 3. Online Auction System
-
-A distributed online auction platform where multiple users can participate in auctions and place bids concurrently. Auctions have a defined start and end time, and the system must determine the winning bid while ensuring that concurrent bids are processed correctly and no valid bid is lost or incorrectly accepted.
-
-The main challenge is handling high volumes of simultaneous bids while maintaining ordering, consistency, and fairness. The system can use distributed locking, event streaming, message queues, caching, and concurrency control to process bids reliably across multiple services.
-
-Key distributed-systems concepts:
-Concurrency control, distributed locking, event-driven architecture, message queues, real-time communication, consistency, fault tolerance, idempotency, and distributed transactions.
+- Distributed virtual waiting rooms
+- FIFO queueing and fair admission
+- Redis Sorted Sets or Kafka partitions
+- Rate limiting and backpressure
+- Load balancing and concurrent request handling
+- Distributed coordination
+- Fault tolerance and idempotent operations
+- Consistency between ticket availability, reservations, and purchases
