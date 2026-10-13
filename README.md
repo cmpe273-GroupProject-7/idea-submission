@@ -161,5 +161,3 @@ flowchart TB
 | Source control / CI | GitHub, GitHub Actions |
 
 ---
-
-*Each team lead submits only one.*
